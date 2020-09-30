@@ -1,0 +1,16 @@
+{application, aesophia_rebar_plugin,
+ [{description, "A rebar plugin to compile sophia contracts"},
+  {vsn, "0.0.1"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib,
+    yamerl
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, ["Grzegorz Uriasz"]},
+  {licenses, ["ISC"]},
+  {links, []}
+ ]}.
