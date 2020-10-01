@@ -122,7 +122,7 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
             {error, io_lib:format("Unable to read compilation result: ~p", [OutFilename])};
         {_, {ok, Output}} ->
              case try
-                    JObject = case jsx:decode(Output, [{return_maps,false},{labels,binary}]) of
+                    JObject = case jsx:decode(Output, [{return_maps,true},{labels,binary}]) of
                                   Map when is_map(Map) ->
                                       Map;
                                   [Map] when is_map(Map) ->
@@ -134,7 +134,7 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
                   <<"cb_", _/binary>> = B,
                   {ok, B}
                 catch E:R:S ->
-                    {error, "Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S]}
+                    {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S])}
                 end of
                     {ok, Bytecode} ->
                         verify_(State, CompilerPath, Version, InFilename, Bytecode);
@@ -150,8 +150,8 @@ verify_(State, CompilerPath, Version, InFilename, Bytecode) ->
         rebar_api:info("Validation successfull", []),
         {ok, State}
     catch
-        _:_ ->
-            {error, "Invalid compilation results. Do not trust the contract!"}
+        E:R:S ->
+            {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S])}
     end.
 
 format_compilation_command(CompilerPath, [$v, $4 | _], InFilename) ->
