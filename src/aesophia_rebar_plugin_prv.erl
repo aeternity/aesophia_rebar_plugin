@@ -33,7 +33,7 @@ do(State) ->
     ContractFilename = proplists:get_value(contract, KVs, get_from_state(contract, State, undefined)),
     OutFilename = proplists:get_value(compile, KVs, get_from_state(compile, State, undefined)),
     Verify = proplists:get_value(verify, KVs, get_from_state(verify, State, false)),
-    CompilerVersion = proplists:get_value(compile, KVs, get_from_state(compile, State, "v4.3.1")),
+    CompilerVersion = proplists:get_value(compiler_version, KVs, get_from_state(compiler_version, State, "v4.3.1")),
     case compiler_path(CompilerVersion, Verify) of
         {ok, CompilerPath} ->
             case {ContractFilename, OutFilename, Verify} of
