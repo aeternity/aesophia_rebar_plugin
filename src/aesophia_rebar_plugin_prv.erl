@@ -146,7 +146,7 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
 verify_(State, CompilerPath, Version, InFilename, Bytecode) ->
     try
         <<"Validation successful", _/binary>> =
-            os:cmd(format_validation_command(CompilerPath, Version, InFilename, Bytecode)),
+            list_to_binary(os:cmd(format_validation_command(CompilerPath, Version, InFilename, Bytecode))),
         rebar_api:info("Validation successfull", []),
         {ok, State}
     catch
