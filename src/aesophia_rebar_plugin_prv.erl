@@ -98,7 +98,7 @@ compile(State, CompilerPath, Version, InFilename, OutFilename) ->
         {false, _} ->
             {error, io_lib:format("Unable to read the sophia contract: ~p", [InFilename])};
         {_, true} ->
-            rebar_api:warn("Compilation will overwrite ~p", [OutFilename]),
+            rebar_api:info("Compilation will overwrite ~p", [OutFilename]),
             compile_(State, CompilerPath, Version, InFilename, OutFilename);
         _ ->
             compile_(State, CompilerPath, Version, InFilename, OutFilename)
@@ -122,8 +122,10 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
             {error, io_lib:format("Unable to read compilation result: ~p", [OutFilename])};
         {_, {ok, Output}} ->
              case try
+                    JObject = jsx:decode(Output, [{return_maps,false},{labels,binary}]),
+                      rebar_api:info("Debug: ~p", [JObject]),
                   #{ <<"bytecode">> := B
-                   , <<"aci">> := JText} = jsx:decode(Output, [{return_maps,false},{labels,binary}]),
+                   , <<"aci">> := JText} = JObject,
                   aeaci_aci:from_string(JText, #{backend => fate}),
                   <<"cb_", _/binary>> = B,
                   {ok, B}
@@ -172,4 +174,4 @@ postprocess_aci(CompilerOutput, [$v, $4 | _]) ->
     end.
 
 format_validation_command(CompilerPath, _Version, InFilename, Bytecode) ->
-    io_lib:format("~p ~p --validate \"~p\"", [CompilerPath, InFilename, Bytecode]).
+    io_lib:format("~p \"~s\" --validate \"~s\"", [CompilerPath, InFilename, Bytecode]).
