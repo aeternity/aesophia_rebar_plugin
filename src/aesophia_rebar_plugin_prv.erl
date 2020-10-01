@@ -153,7 +153,7 @@ format_compilation_command(CompilerPath, [$v, $4 | _], InFilename) ->
 
 postprocess_compilation(CompilerOutput, [$v, $4 | _]) ->
     try
-        <<"Bytecode:\n", Bytecode/binary>> = CompilerOutput,
+        <<"Bytecode:\n", Bytecode/binary>> = list_to_binary(CompilerOutput),
         string:strip(binary_to_list(Bytecode))
     catch E:R ->
         rebar_api:abort("Compilation failed ~p ~p", [E, R])
