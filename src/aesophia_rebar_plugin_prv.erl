@@ -22,8 +22,8 @@ init(State) ->
                     {verify, $v, "verify", boolean, "filename of a compilation result to verify against the given source code"},
                     {compiler_version, $s, "version", string, "Compiler version, by default v4.3.1"}
                    ]},                    % list of options understood by the plugin
-            {short_desc, "Compile sophia contracts"},
-            {desc, "A rebar plugin to generate or validate sophia contracts while building your project"}
+            {short_desc, "Compile sophia contracts."},
+            {desc, "Compile or validate sophia contracts while building your project."}
     ]),
     {ok, rebar_state:add_provider(State, Provider)}.
 
