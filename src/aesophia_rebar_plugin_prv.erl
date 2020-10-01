@@ -122,15 +122,19 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
             {error, io_lib:format("Unable to read compilation result: ~p", [OutFilename])};
         {_, {ok, Output}} ->
              case try
-                    JObject = jsx:decode(Output, [{return_maps,false},{labels,binary}]),
-                      rebar_api:info("Debug: ~p", [JObject]),
+                    JObject = case jsx:decode(Output, [{return_maps,false},{labels,binary}]) of
+                                  Map when is_map(Map) ->
+                                      Map;
+                                  [Map] when is_map(Map) ->
+                                      Map
+                              end,
                   #{ <<"bytecode">> := B
                    , <<"aci">> := JText} = JObject,
                   aeaci_aci:from_string(JText, #{backend => fate}),
                   <<"cb_", _/binary>> = B,
                   {ok, B}
-                catch _:_ ->
-                    {error, "Invalid compilation results. Do not trust the contract!"}
+                catch E:R:S ->
+                    {error, "Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S]}
                 end of
                     {ok, Bytecode} ->
                         verify_(State, CompilerPath, Version, InFilename, Bytecode);
