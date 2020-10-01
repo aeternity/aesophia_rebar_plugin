@@ -154,7 +154,7 @@ format_compilation_command(CompilerPath, [$v, $4 | _], InFilename) ->
 postprocess_compilation(CompilerOutput, [$v, $4 | _]) ->
     try
         <<"Bytecode:\n", Bytecode/binary>> = list_to_binary(CompilerOutput),
-        list_to_binary(string:strip(binary_to_list(Bytecode)))
+        list_to_binary(string:trim(binary_to_list(Bytecode)))
     catch E:R ->
         rebar_api:abort("Compilation failed ~p ~p", [E, R])
     end.
@@ -164,7 +164,7 @@ format_aci_command(CompilerPath, _Version, InFilename) ->
 
 postprocess_aci(CompilerOutput, [$v, $4 | _]) ->
     try
-        JText = list_to_binary(CompilerOutput),
+        JText = list_to_binary(string:trim(CompilerOutput)),
         aeaci_aci:from_string(JText, #{backend => fate}),
         JText
     catch E:R:S ->
