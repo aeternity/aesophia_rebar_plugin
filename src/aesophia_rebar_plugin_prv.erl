@@ -3,7 +3,7 @@
 -export([init/1, do/1, format_error/1]).
 
 -define(PROVIDER, aesophia).
--define(DEPS, [app_discovery, aesophia_cli]).
+-define(DEPS, [app_discovery]).
 
 %% ===================================================================
 %% Public API
