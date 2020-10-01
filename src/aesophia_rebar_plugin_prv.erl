@@ -134,7 +134,7 @@ verify(State, CompilerPath, Version, InFilename, OutFilename) ->
                   <<"cb_", _/binary>> = B,
                   {ok, B}
                 catch E:R:S ->
-                    {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S])}
+                    {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p\n~p\n~p", [E, R, S])}
                 end of
                     {ok, Bytecode} ->
                         verify_(State, CompilerPath, Version, InFilename, Bytecode);
@@ -151,7 +151,7 @@ verify_(State, CompilerPath, Version, InFilename, Bytecode) ->
         {ok, State}
     catch
         E:R:S ->
-            {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p ~p ~p", [E, R, S])}
+            {error, io_lib:format("Invalid compilation results. Do not trust the contract!\n~p\n~p\n~p", [E, R, S])}
     end.
 
 format_compilation_command(CompilerPath, [$v, $4 | _], InFilename) ->
