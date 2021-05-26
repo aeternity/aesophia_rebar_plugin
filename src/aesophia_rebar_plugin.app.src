@@ -1,6 +1,6 @@
 {application, aesophia_rebar_plugin,
  [{description, "A rebar plugin to compile sophia contracts"},
-  {vsn, "5.1.0"},
+  {vsn, "6.0.0"},
   {registered, []},
   {applications,
    [kernel,
